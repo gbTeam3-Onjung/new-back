@@ -21,11 +21,11 @@ public class ReportMapperTests {
     @Test
     public void testWrite() {
         ReportDTO reportDTO = new ReportDTO();
-        reportDTO.setReportReason("신고 준비 중");
+        reportDTO.setReportReason("욕설이 심해요.");
         reportDTO.setReportStatus("WAITING");
-        reportDTO.setPostId(151L);
-        reportDTO.setMemberId(2L);
-        reportDTO.setReportedMemberId(1L);
+        reportDTO.setPostId(83L);
+        reportDTO.setMemberId(10L);
+        reportDTO.setReportedMemberId(11L);
         reportMapper.insert(reportDTO.toVO());
     }
 

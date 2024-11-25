@@ -26,6 +26,7 @@ create table tbl_member (
 select * from tbl_member;
 
 
+
 UPDATE tbl_member
 SET member_name = '이지민'
 WHERE id = 26;

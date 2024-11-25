@@ -351,6 +351,7 @@ public AdminDTO getReportList(Pagination pagination, Search search, @RequestPara
         reports = reportService.getFilteredReports(pagination, search, filterType);
         log.info("필터 '{}' 적용하여 가져온 신고 개수: {}건", filterType, reports.size()); // 필터 적용된 결과 개수 출력
     }
+    log.info("가져온 신고 데이터: {}", reports);
 
     // 결과 데이터를 AdminDTO에 설정하여 반환
     AdminDTO result = new AdminDTO();

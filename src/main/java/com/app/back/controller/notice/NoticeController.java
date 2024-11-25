@@ -55,13 +55,19 @@ public class NoticeController {
     }
 
     @PostMapping("help-write")
-    public RedirectView inquiryWrite(@RequestParam("file") List<MultipartFile> files, InquiryDTO inquiryDTO,AttachmentVO attachmentVO, HttpSession session) throws IOException {
+    public RedirectView inquiryWrite(InquiryDTO inquiryDTO, HttpSession session) {
+        // 로그인한 사용자 정보를 가져옵니다.
         MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+        if (loginMember == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
+        }
+
+        // 문의 정보를 설정합니다.
         inquiryDTO.setMemberId(loginMember.getId());
         inquiryDTO.setPostType("INQUIRY");
 
         // InquiryType 한글명을 코드값으로 변환
-        InquiryType inquiryType = InquiryType.NORMAL; // 기본값 설정 (혹은 적절한 기본값)
+        InquiryType inquiryType = InquiryType.NORMAL; // 기본값 설정
         if ("일반 문의".equals(inquiryDTO.getInquiryType())) {
             inquiryType = InquiryType.NORMAL;
         } else if ("봉사단체 가입 문의".equals(inquiryDTO.getInquiryType())) {
@@ -69,19 +75,13 @@ public class NoticeController {
         }
         inquiryDTO.setInquiryType(inquiryType.name());
 
-        String rootPath = "/home/ubuntu/upload" + getPath();
-        UUID uuid = UUID.randomUUID();
-
-        File directory = new File(rootPath);
-        if(!directory.exists()){
-            directory.mkdirs();
-        }
-
         // 데이터베이스에 게시글 저장
         inquiryService.write(inquiryDTO);
 
+        // 도움말 메인 페이지로 리다이렉트
         return new RedirectView("/help/help");
     }
+
     private String getPath() {
         return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }

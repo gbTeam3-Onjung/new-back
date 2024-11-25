@@ -4,11 +4,11 @@ const requestTypeArea = document.querySelector("#request-type-area");
 const requestAgreementInput = document.querySelector(
     "#request-agreements-check"
 );
-const attachmentsUploadPool = document.querySelector(
-    "#attachments-upload-pool"
-);
-const attachInput = document.querySelector("#attach-input");
-let i = 0;
+// const attachmentsUploadPool = document.querySelector(
+//     "#attachments-upload-pool"
+// );
+// const attachInput = document.querySelector("#attach-input");
+// let i = 0;
 
 HTMLCollection.prototype.forEach = Array.prototype.forEach;
 HTMLCollection.prototype.filter = Array.prototype.filter;
@@ -27,16 +27,6 @@ requestTypeArea.children.forEach((child) => {
         e.target.style.backgroundColor = "";
     });
     child.addEventListener("click", (e) => {
-        // console.log(e.target.innerText);
-        // requestTypeInput.innerText = e.target.innerText;
-        // requestTypeSelect.children.forEach((child) => {
-        //     child.selected =
-        //         child.innerText.trim() === e.target.innerText ? "true" : "";
-        // });
-        // requestTypeInput.ariaExpanded = "false";
-        // requestTypeArea.classList.toggle("active");
-        // requestTypeInput.classList.toggle("active");
-        // console.log(requestTypeSelect.value);
         const selectedText = e.target.innerText.trim(); // 선택한 항목의 텍스트
         requestTypeInput.innerText = selectedText; // 선택한 값을 보여줌
 
@@ -60,6 +50,7 @@ requestAgreementInput.addEventListener("change", (e) => {
     );
 });
 
+/*
 // 첨부파일 목록 관리
 attachInput.addEventListener("change", (e) => {
     // 파일 정보 불러오기
@@ -99,9 +90,10 @@ attachInput.addEventListener("change", (e) => {
         });
     });
 });
+*/
 
 document.addEventListener("DOMContentLoaded", () => {
-    const inquiryForm = document.querySelector("#new-request"); // 이름 변경
+    const inquiryForm = document.querySelector("#new-request");
     const requestTypeInput = document.querySelector(".request-type-input");
     const inquiryEmailInput = document.querySelector("#requester-email");
     const inquiryPhoneInput = document.querySelector("#requester-phone");
@@ -109,56 +101,59 @@ document.addEventListener("DOMContentLoaded", () => {
     const descriptionInput = document.querySelector("#request-description");
     const agreementCheckbox = document.querySelector("#request-agreements-check");
 
+    // 정규식
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 이메일 형식
     const phoneRegex = /^[0-9]{10,11}$/; // 연락처 (10자리 또는 11자리 숫자)
 
     inquiryForm.addEventListener("submit", (e) => {
-        e.preventDefault(); // 기본 폼 제출 동작 방지
+        e.preventDefault(); // 기본 제출 동작 방지
 
         let isValid = true;
         const messages = [];
 
+        // 문의항목 선택 확인
         if (requestTypeInput.innerText.trim() === "-" || requestTypeInput.innerText.trim() === "") {
             isValid = false;
             messages.push("문의항목을 선택해주세요.");
         }
 
+        // 이메일 유효성 검사
         if (!emailRegex.test(inquiryEmailInput.value.trim())) {
             isValid = false;
             messages.push("유효한 이메일 주소를 입력해주세요.");
         }
 
+        // 연락처 유효성 검사
         if (!phoneRegex.test(inquiryPhoneInput.value.trim())) {
             isValid = false;
             messages.push("연락처는 10자리 또는 11자리 숫자로 입력해주세요.");
         }
 
+        // 제목 필드 확인
         if (titleInput.value.trim() === "") {
             isValid = false;
             messages.push("제목을 입력해주세요.");
         }
 
+        // 설명 필드 확인
         if (descriptionInput.value.trim() === "") {
             isValid = false;
             messages.push("설명을 입력해주세요.");
         }
 
+        // 개인정보 동의 확인
         if (!agreementCheckbox.checked) {
             isValid = false;
             messages.push("개인정보 수집 및 이용에 동의해주세요.");
         }
 
+        // 유효성 검사 실패 시 메시지 출력
         if (!isValid) {
             alert(messages.join("\n"));
-            return; // 유효성 검사 실패 시 종료
+            return;
         }
 
-        alert("문의 작성이 완료되었습니다.");
-        HTMLFormElement.prototype.submit.call(inquiryForm); // 폼 제출
+        // 유효성 검사 통과 시 폼 제출
+        HTMLFormElement.prototype.submit.call(inquiryForm);
     });
 });
-
-
-
-
-

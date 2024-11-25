@@ -503,6 +503,7 @@ const renderReports = (reports) => {
                     </div>
                 </div>`
     reports.forEach((report) => {
+        console.log("현재 신고 데이터:", report);
         content += `
         <div class="ServiceTable_row_wrapper">
             <div class="ServiceTable_row">
@@ -521,6 +522,7 @@ const renderReports = (reports) => {
             </div>
         </div>`;
     });
+    console.log(reportContainer); // reports 배열 확인
 
     reportContainer.innerHTML = content;
     selectAllReports();
